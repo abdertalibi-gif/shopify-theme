@@ -9,12 +9,277 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Nouvelle collection",
+        "heading": "L'élégance au quotidien",
+        "subtitle": "Des pièces premium soigneusement sélectionnées pour sublimer votre style. Livraison rapide partout au Maroc.",
+        "primary_button_label": "Découvrir la collection",
+        "secondary_button_label": "Nos best-sellers",
+        "show_overlay": true,
+        "overlay_opacity": 40,
+        "height": "large",
+        "text_alignment": "left",
+        "text_color": "#FFFFFF"
+      }
+    },
+    "featured_collections": {
+      "type": "featured-collections",
+      "settings": {
+        "eyebrow": "Nos univers",
+        "heading": "Collections vedettes",
+        "subheading": "Explorez nos univers soigneusement sélectionnés pour vous.",
+        "columns": 3,
+        "show_product_count": true,
+        "card_button_label": "Explorer",
+        "soft_background": false
+      },
+      "blocks": {
+        "collection_1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_2": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_3": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "collection_1",
+        "collection_2",
+        "collection_3"
+      ]
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Coup de cœur",
+        "heading": "Best-sellers",
+        "subheading": "Les pièces préférées de nos clients, sélectionnées pour vous.",
+        "products_to_show": 4,
+        "columns": 4,
+        "show_view_all": true,
+        "view_all_label": "Voir toute la collection",
+        "soft_background": true
+      }
+    },
+    "product_benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "eyebrow": "Nos engagements",
+        "heading": "Une expérience premium",
+        "subheading": "Des services pensés pour votre satisfaction.",
+        "columns": 4,
+        "soft_background": false
+      },
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison rapide",
+            "text": "Livraison express 24/48h partout au Maroc."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Paiement sécurisé",
+            "text": "Transactions cryptées et 100% sécurisées."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "returns",
+            "title": "Retours faciles",
+            "text": "Satisfait ou remboursé sous 14 jours."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "support",
+            "title": "Support client",
+            "text": "Une équipe à votre écoute 7j/7."
+          }
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "benefit_4"
+      ]
+    },
+    "promo_banner": {
+      "type": "promo-banner",
+      "settings": {
+        "eyebrow": "Offre limitée",
+        "heading": "Jusqu'à -30% sur la nouvelle collection",
+        "text": "Profitez de réductions exclusives pendant une durée limitée. Livraison offerte dès 500 MAD.",
+        "button_label": "J'en profite",
+        "overlay_opacity": 45,
+        "text_alignment": "center",
+        "background_color": "#9A6B4F",
+        "text_color": "#FFFFFF"
+      }
+    },
+    "product_showcase": {
+      "type": "product-showcase",
+      "settings": {
+        "eyebrow": "Le coup de cœur",
+        "heading": "Une pièce signature",
+        "text": "Découvrez notre pièce signature : un savoir-faire d'exception, des matières nobles et un design intemporel.",
+        "show_price": true,
+        "reverse_layout": true,
+        "button_label": "Voir le produit",
+        "soft_background": true
+      },
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "text": "Matières nobles et durables"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "text": "Design intemporel"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "text": "Fabrication soignée"
+          }
+        }
+      },
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3"
+      ]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Témoignages",
+        "heading": "Ils nous font confiance",
+        "subheading": "La satisfaction de nos clients est notre plus belle récompense.",
+        "columns": 3,
+        "soft_background": false
+      },
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Qualité exceptionnelle et livraison ultra rapide. Je recommande vivement !",
+            "name": "Salma B.",
+            "role": "Casablanca"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Service client au top, produit conforme à la description. Très satisfaite.",
+            "name": "Yasmine E.",
+            "role": "Rabat"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Des pièces élégantes et soignées. Le paiement à la livraison est un vrai plus.",
+            "name": "Omar T.",
+            "role": "Marrakech"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Questions fréquentes",
+        "subheading": "Tout ce que vous devez savoir avant de commander.",
+        "soft_background": true
+      },
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Nous livrons partout au Maroc sous 24 à 72h selon votre ville.</p>",
+            "open": true
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je payer à la livraison ?",
+            "answer": "<p>Oui, le paiement à la livraison (Cash on Delivery) est disponible sur tout le territoire.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "Comment effectuer un retour ?",
+            "answer": "<p>Vous disposez de 14 jours pour retourner un article. Contactez notre service client pour démarrer la procédure.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "Les produits sont-ils authentiques ?",
+            "answer": "<p>Tous nos produits sont 100% authentiques et sélectionnés auprès de fournisseurs de confiance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4"
+      ]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Newsletter",
+        "heading": "Restez inspiré",
+        "text": "Inscrivez-vous pour recevoir nos nouveautés, offres exclusives et conseils en avant-première.",
+        "placeholder": "Votre adresse e-mail",
+        "button_label": "S'inscrire",
+        "note": "En vous inscrivant, vous acceptez de recevoir nos emails. Désinscription en un clic.",
+        "soft_background": false
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "featured_collections",
+    "featured_products",
+    "product_benefits",
+    "promo_banner",
+    "product_showcase",
+    "testimonials",
+    "faq",
+    "newsletter"
   ]
 }

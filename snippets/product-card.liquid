@@ -1,0 +1,49 @@
+{%- comment -%}
+  Reusable premium product card.
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+<div class="product-card reveal">
+  <div class="product-card__media">
+    <a href="{{ product.url }}" tabindex="-1" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '360, 540, 720, 1000', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw' }}
+      {%- else -%}
+        <div class="product-card__placeholder" aria-hidden="true"></div>
+      {%- endif -%}
+    </a>
+
+    {%- liquid
+      assign available = false
+      if product.available
+        assign available = true
+      endif
+      assign single_variant = false
+      if product.variants.size == 1
+        assign single_variant = true
+      endif
+    -%}
+
+    {%- if available and single_variant -%}
+      <button
+        class="btn btn--small product-card__quick-add"
+        type="button"
+        data-quick-add="{{ product.variants.first.id }}"
+      >
+        {% render 'icon', icon: 'cart' %}
+        {{ 'products.quick_add' | t }}
+      </button>
+    {%- endif -%}
+  </div>
+
+  {%- render 'price', product: product -%}
+
+  <div class="product-card__info">
+    {%- if product.vendor -%}
+      <span class="product-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+  </div>
+</div>

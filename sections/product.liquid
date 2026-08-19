@@ -1,44 +1,143 @@
-{% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
+{%- comment -%}
+  Product section — premium product page with media gallery,
+  variant selection, quantity, add-to-cart and buy buttons.
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
-{% endcomment %}
+  Preserves Shopify's native product form and payment button.
+{%- endcomment -%}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+-%}
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+<div class="section">
+  <div class="page-width">
+    <div class="product-page">
+      <div class="product-gallery">
+        <div class="product-gallery__main" id="ProductGalleryMain">
+          {%- if product.featured_image -%}
+            {{ product.featured_image | image_url: width: 1500 | image_tag: loading: 'eager', widths: '550, 720, 990, 1100, 1500', sizes: '(min-width: 990px) 55vw, 100vw' }}
+          {%- else -%}
+            <div style="aspect-ratio: 4 / 5; background: var(--color-soft);"></div>
+          {%- endif -%}
+        </div>
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
+        {%- if product.images.size > 1 -%}
+          <div class="product-gallery__thumbs" role="list" aria-label="{{ 'products.media_gallery' | t }}">
+            {%- for image in product.images -%}
+              <button
+                class="product-gallery__thumb {% if forloop.first %}is-active{% endif %}"
+                type="button"
+                data-gallery-thumb="{{ image | image_url: width: 1500 }}"
+                aria-label="{{ 'products.media_gallery' | t }}"
+                {% if forloop.first %}aria-current="true"{% endif %}
+              >
+                {{ image | image_url: width: 200 | image_tag: loading: 'lazy', alt: image.alt | escape }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
 
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
+      <div class="product-details">
+        {%- if product.vendor != blank -%}
+          <span class="product-details__vendor">{{ product.vendor | escape }}</span>
+        {%- endif -%}
 
-    <input type="text" name="quantity" min="1" value="1">
+        <h1 class="product-details__title">{{ product.title | escape }}</h1>
 
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
+        <div class="product-details__price">
+          {%- if product.price_varies -%}
+            {{ 'products.from' | t }} {{ product.price_min | money }}
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+          {%- if on_sale -%}
+            <span class="price--compare">{{ product.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="product-details__description rte">{{ product.description }}</div>
+        {%- endif -%}
+
+        {%- assign product_form_id = 'product_form_' | append: product.id -%}
+
+        {%- form 'product', product, id: product_form_id, class: 'product-form' -%}
+
+          <div class="product-form__variants">
+            {%- if product.variants.size > 1 -%}
+              <div>
+                <label class="variant-label" for="variant-{{ product.id }}">
+                  {{ 'products.variant' | t }}
+                </label>
+                <select
+                  class="variant-select"
+                  id="variant-{{ product.id }}"
+                  name="id"
+                >
+                  {%- for variant in product.variants -%}
+                    <option
+                      value="{{ variant.id }}"
+                      {% if variant == current_variant %}selected="selected"{% endif %}
+                      {% unless variant.available %}disabled{% endunless %}
+                    >
+                      {{ variant.title }}
+                      {%- if variant.available == false %} — {{ 'products.sold_out' | t }}{% endif -%}
+                      {%- if variant.compare_at_price > variant.price %} — {{ 'products.sale' | t }}{% endif -%}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- else -%}
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+            {%- endif -%}
+
+            <div class="product-form__row">
+              <div class="quantity-selector" data-quantity-selector>
+                <button type="button" data-quantity-minus aria-label="{{ 'products.decrease' | t }}">&minus;</button>
+                <input type="number" name="quantity" min="1" value="1" aria-label="{{ 'products.quantity' | t }}">
+                <button type="button" data-quantity-plus aria-label="{{ 'products.increase' | t }}">+</button>
+              </div>
+
+              <button
+                class="btn product-form__submit"
+                type="submit"
+                name="add"
+                {% unless current_variant.available %}disabled{% endunless %}
+              >
+                {%- if current_variant.available -%}
+                  {{ 'products.add_to_cart' | t }}
+                {%- else -%}
+                  {{ 'products.sold_out' | t }}
+                {%- endif -%}
+              </button>
+            </div>
+          </div>
+
+          {{ form | payment_button }}
+        {%- endform -%}
+
+        <ul class="product-details__meta" role="list">
+          <li>
+            {% render 'icon', icon: 'truck' %}
+            <span>{{ 'products.trust_delivery' | t }}</span>
+          </li>
+          <li>
+            {% render 'icon', icon: 'returns' %}
+            <span>{{ 'products.trust_returns' | t }}</span>
+          </li>
+          <li>
+            {% render 'icon', icon: 'shield' %}
+            <span>{{ 'products.trust_payment' | t }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% schema %}

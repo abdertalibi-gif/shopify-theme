@@ -1,4 +1,10 @@
 {
+  "general": {
+    "skip_to_content": "Skip to content",
+    "menu": "Menu",
+    "close": "Close",
+    "announcement_bar": "Announcement"
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -15,11 +21,24 @@
   },
   "cart": {
     "checkout": "Checkout",
+    "continue_shopping": "Continue shopping",
+    "decrease": "Decrease quantity",
+    "empty_text": "Your cart is currently empty.",
+    "empty_title": "Your cart is empty",
+    "increase": "Increase quantity",
+    "price": "Price",
+    "product": "Product",
+    "quantity": "Quantity",
+    "remove": "Remove",
+    "savings_html": "You save {{ amount }}",
+    "shipping_note": "Taxes and shipping calculated at checkout.",
+    "subtotal": "Subtotal",
     "title": "Cart",
-    "update": "Update",
-    "remove": "Remove"
+    "total": "Total",
+    "update": "Update"
   },
   "customers": {
+    "account": "Account",
     "login": {
       "email": "Email",
       "password": "Password",
@@ -28,7 +47,27 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "products": "products",
+    "sort_by": "Sort by",
+    "sort_apply": "Apply",
+    "empty": "No products in this collection yet."
+  },
+  "products": {
+    "add_to_cart": "Add to cart",
+    "decrease": "Decrease quantity",
+    "from": "From",
+    "increase": "Increase quantity",
+    "media_gallery": "Product media gallery",
+    "no_products": "No products available yet.",
+    "quantity": "Quantity",
+    "quick_add": "Add to cart",
+    "sale": "On sale",
+    "sold_out": "Sold out",
+    "trust_delivery": "Fast delivery across Morocco",
+    "trust_payment": "Secure payment",
+    "trust_returns": "Easy returns within 14 days",
+    "variant": "Variant"
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -36,6 +75,10 @@
     "expired": "This gift card has expired",
     "expires_on": "Expires on {{ expires_on }}",
     "use_at_checkout": "Use this gift card at checkout"
+  },
+  "newsletter": {
+    "email": "Email address",
+    "success": "Thank you for subscribing!"
   },
   "password": {
     "title": "This shop is private",

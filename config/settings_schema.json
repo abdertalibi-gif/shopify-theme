@@ -1,8 +1,8 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Skeleton",
-    "theme_version": "0.1.0",
+    "theme_name": "Atlas Premium",
+    "theme_version": "1.0.0",
     "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
@@ -18,7 +18,13 @@
         "type": "font_picker",
         "id": "type_primary_font",
         "default": "work_sans_n4",
-        "label": "t:general.primary"
+        "label": "t:labels.primary_font"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "default": "playfair_display_n4",
+        "label": "t:labels.heading_font"
       }
     ]
   },
@@ -37,9 +43,13 @@
           {
             "value": "110rem",
             "label": "t:options.page_width.wide"
+          },
+          {
+            "value": "120rem",
+            "label": "t:options.page_width.extra_wide"
           }
         ],
-        "default": "90rem"
+        "default": "110rem"
       },
       {
         "type": "range",
@@ -49,7 +59,7 @@
         "step": 1,
         "unit": "px",
         "label": "t:labels.page_margin",
-        "default": 20
+        "default": 24
       }
     ]
   },
@@ -65,17 +75,81 @@
       {
         "type": "color",
         "id": "foreground_color",
-        "default": "#333333",
+        "default": "#5A5550",
         "label": "t:labels.foreground"
+      },
+      {
+        "type": "color",
+        "id": "heading_color",
+        "default": "#2B2622",
+        "label": "t:labels.heading_color"
+      },
+      {
+        "type": "color",
+        "id": "accent_color",
+        "default": "#9A6B4F",
+        "label": "t:labels.accent_color"
+      },
+      {
+        "type": "color",
+        "id": "accent_foreground_color",
+        "default": "#FFFFFF",
+        "label": "t:labels.accent_foreground_color"
+      },
+      {
+        "type": "color",
+        "id": "soft_color",
+        "default": "#F6F3EF",
+        "label": "t:labels.soft_color"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "default": "#E7E1DA",
+        "label": "t:labels.border_color"
+      },
+      {
+        "type": "color",
+        "id": "footer_background_color",
+        "default": "#211D1A",
+        "label": "t:labels.footer_background_color"
+      },
+      {
+        "type": "color",
+        "id": "footer_text_color",
+        "default": "#CFC8C0",
+        "label": "t:labels.footer_text_color"
+      },
+      {
+        "type": "color",
+        "id": "announcement_background_color",
+        "default": "#9A6B4F",
+        "label": "t:labels.announcement_background_color"
+      },
+      {
+        "type": "color",
+        "id": "announcement_text_color",
+        "default": "#FFFFFF",
+        "label": "t:labels.announcement_text_color"
       },
       {
         "type": "range",
         "id": "input_corner_radius",
         "min": 0,
-        "max": 10,
+        "max": 16,
         "step": 1,
         "unit": "px",
         "label": "t:labels.input_corner_radius",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "button_corner_radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "t:labels.button_corner_radius",
         "default": 4
       }
     ]

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Renders product price including compare-at price and badge.
+  Usage: {% render 'price', product: product, show_badge: true %}
+{%- endcomment -%}
+
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+  assign show_badge = show_badge | default: true
+-%}
+
+<span class="product-card__price">
+  {%- if product.price_varies -%}
+    <span class="price__from">{{ 'products.from' | t }}</span>
+    {{ product.price_min | money }}
+  {%- else -%}
+    {{ product.price | money }}
+  {%- endif -%}
+
+  {%- if on_sale -%}
+    <span class="price--compare">{{ product.compare_at_price | money }}</span>
+  {%- endif -%}
+</span>
+
+{%- if show_badge and on_sale -%}
+  {%- assign savings = product.compare_at_price | minus: product.price -%}
+  {%- assign percentage = savings | times: 100.0 | divided_by: product.compare_at_price | round -%}
+  <span class="product-card__badge product-card__badge--sale">
+    -{{ percentage }}%
+  </span>
+{%- endif -%}

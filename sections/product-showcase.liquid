@@ -1,0 +1,156 @@
+{%- comment -%}
+  Product showcase — large image with content, feature list,
+  price and CTA.
+{%- endcomment -%}
+
+{%- liquid
+  assign product = section.settings.product
+  assign image = section.settings.image
+  if image == blank and product != blank and product.featured_image
+    assign image = product.featured_image
+  endif
+-%}
+
+<div class="section {% if section.settings.soft_background %}section--soft{% endif %}">
+  <div class="page-width">
+    <div class="showcase {% if section.settings.reverse_layout %}showcase--reverse{% endif %}">
+      <div class="showcase__media reveal">
+        {%- if image != blank -%}
+          {{ image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '550, 720, 990, 1100, 1400', sizes: '(min-width: 990px) 50vw, 100vw' }}
+        {%- else -%}
+          <div class="showcase__placeholder" style="aspect-ratio: 4 / 4.6; background: var(--color-soft);"></div>
+        {%- endif -%}
+      </div>
+
+      <div class="showcase__content reveal" style="--reveal-delay: 120ms;">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="showcase__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="showcase__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="showcase__text rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="showcase__features" role="list">
+            {%- for block in section.blocks -%}
+              <li class="showcase__feature" {{ block.shopify_attributes }}>
+                {% render 'icon', icon: 'check' %}
+                <span>{{ block.settings.text | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.show_price and product != blank -%}
+          <div class="showcase__price">
+            {{ product.price | money }}
+            {%- if product.compare_at_price > product.price -%}
+              <span class="price--compare">{{ product.compare_at_price | money }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="showcase__cta">
+            <a class="btn" href="{{ section.settings.button_link | default: product.url | default: routes.root_url }}">
+              {{ section.settings.button_label | escape }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:general.product_showcase",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "default": "Le coup de cœur"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Une pièce signature"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "t:labels.text",
+      "default": "Découvrez notre pièce signature : un savoir-faire d'exception, des matières nobles et un design intemporel."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:labels.product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "t:labels.show_price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "t:labels.reverse_layout",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:labels.button_label",
+      "default": "Voir le produit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:labels.button_link"
+    },
+    {
+      "type": "checkbox",
+      "id": "soft_background",
+      "label": "t:labels.soft_background",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "t:labels.feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "Matières nobles et durables"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.product_showcase",
+      "blocks": [
+        { "type": "feature", "settings": { "text": "Matières nobles et durables" } },
+        { "type": "feature", "settings": { "text": "Design intemporel" } },
+        { "type": "feature", "settings": { "text": "Fabrication soignée" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

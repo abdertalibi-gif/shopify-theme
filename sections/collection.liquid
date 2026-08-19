@@ -1,41 +1,83 @@
-{% comment %}
-  This section is used in the collection template to render collection page
-  listing all products within a collection.
+{%- comment -%}
+  Collection section — premium collection page with
+  product cards and sorting.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
-{% endcomment %}
+<div class="section">
+  <div class="page-width">
+    <div class="collection-hero">
+      <h1 class="collection-hero__title">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
 
-<h1>{{ collection.title }}</h1>
+    <div class="collection-sort">
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      <form action="{{ collection.url }}" method="get">
+        <label class="collection-sort__label" for="SortBy">{{ 'collections.sort_by' | t }}</label>
+        <select class="collection-sort__select" id="SortBy" name="sort_by">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+        <noscript>
+          <button type="submit" class="btn btn--small">{{ 'collections.sort_apply' | t }}</button>
+        </noscript>
+      </form>
+    </div>
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
+    {%- paginate collection.products by 20 -%}
+      {%- if collection.products.size > 0 -%}
+        <div class="product-grid" style="--products-per-row: 4;">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
         </div>
-      </div>
-    {% endfor %}
+      {%- else -%}
+        <p class="text-center">{{ 'collections.empty' | t }}</p>
+      {%- endif -%}
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
+      {%- if paginate.pages > 1 -%}
+        <div class="collection-pagination">
+          {{ paginate | default_pagination }}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
 </div>
 
 {% stylesheet %}
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  .collection-pagination {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .collection-pagination .pagination {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+  }
+  .collection-pagination a,
+  .collection-pagination .page.current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    color: var(--color-heading);
+    font-size: var(--text-size-sm);
+  }
+  .collection-pagination .page.current {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-accent-foreground);
   }
 {% endstylesheet %}
 

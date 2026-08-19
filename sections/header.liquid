@@ -1,76 +1,247 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+{%- comment -%}
+  Premium header with announcement bar, logo, navigation,
+  search, account, cart, and mobile menu.
+{%- endcomment -%}
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+{%- liquid
+  assign menu = section.settings.menu
+  assign logo = section.settings.logo_image
+  assign show_search = section.settings.show_search
+  assign show_account = section.settings.show_account
+  assign show_cart = section.settings.show_cart
+  assign show_announcement = section.settings.show_announcement
+  assign cart_count_class = 'is-empty'
+  if cart.item_count > 0
+    assign cart_count_class = ''
+  endif
+-%}
+
+{%- if show_announcement and section.settings.announcement_text != blank -%}
+  <div class="announcement-bar" data-announcement-bar role="region" aria-label="{{ 'general.announcement_bar' | t }}">
+    <div class="announcement-bar__inner">
+      {%- if section.settings.announcement_link != blank -%}
+        <p class="announcement-bar__text">
+          <a href="{{ section.settings.announcement_link }}">
+            {{ section.settings.announcement_text | escape }}
+          </a>
+        </p>
+      {%- else -%}
+        <p class="announcement-bar__text">{{ section.settings.announcement_text | escape }}</p>
+      {%- endif -%}
+    </div>
+    <button
+      class="announcement-bar__close"
+      type="button"
+      id="AnnouncementClose"
+      aria-label="{{ 'general.close' | t }}"
+    >
+      {% render 'icon', icon: 'close' %}
+    </button>
   </div>
+{%- endif -%}
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      <shopify-account menu="{{ section.settings.customer_account_menu }}">
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </shopify-account>
-    {% endif %}
+<header class="header" data-header>
+  <div class="header__inner">
+    <button
+      class="header__icon-btn header__menu-toggle"
+      type="button"
+      id="MobileMenuOpen"
+      aria-label="{{ 'general.menu' | t }}"
+      aria-controls="MobileMenu"
+      aria-expanded="false"
+    >
+      {% render 'icon', icon: 'menu' %}
+    </button>
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
+    {%- if menu.links.size > 0 -%}
+      <nav class="header__nav" aria-label="{{ 'general.menu' | t }}">
+        <ul class="header__nav-list">
+          {%- for link in menu.links -%}
+            <li>
+              <a class="header__nav-link" href="{{ link.url }}">
+                {{ link.title | escape }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
+    <div class="header__logo">
+      <a href="{{ routes.root_url }}" class="header__logo-link" aria-label="{{ shop.name | escape }}">
+        {%- if logo != blank -%}
+          {%- assign logo_width = section.settings.logo_width | default: 160 -%}
+          {{ logo | image_url: width: logo_width | image_tag: width: logo_width, class: 'header__logo-image', alt: shop.name, loading: 'eager' }}
+        {%- else -%}
+          <span class="header__logo-text">{{ shop.name | escape }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    <div class="header__right">
+      {%- if show_search -%}
+        <button
+          class="header__icon-btn"
+          type="button"
+          id="SearchOpen"
+          aria-label="{{ 'search.title' | t }}"
+          aria-controls="SearchDrawer"
+          aria-expanded="false"
+        >
+          {% render 'icon', icon: 'search' %}
+        </button>
+      {%- endif -%}
+
+      {%- if show_account and shop.customer_accounts_enabled -%}
+        <a class="header__icon-btn" href="{{ routes.account_url }}" aria-label="{{ 'customers.account' | t }}">
+          {% render 'icon', icon: 'account' %}
+        </a>
+      {%- endif -%}
+
+      {%- if show_cart -%}
+        <a class="header__icon-btn" href="{{ routes.cart_url }}" aria-label="{{ 'cart.title' | t }}">
+          {% render 'icon', icon: 'cart' %}
+          <span class="header__cart-count {{ cart_count_class }}" data-cart-count>
+            {{- cart.item_count -}}
+          </span>
+        </a>
+      {%- endif -%}
+    </div>
   </div>
 </header>
 
-{% stylesheet %}
-  header {
-    height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
+{%- comment -%} Mobile menu drawer {%- endcomment -%}
+<div class="mobile-menu" id="MobileMenu" aria-hidden="true">
+  <div class="mobile-menu__overlay" data-menu-overlay></div>
+  <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="{{ 'general.menu' | t }}">
+    <div class="mobile-menu__header">
+      <span class="mobile-menu__brand">{{ shop.name | escape }}</span>
+      <button class="mobile-menu__close" type="button" id="MobileMenuClose" aria-label="{{ 'general.close' | t }}">
+        {% render 'icon', icon: 'close' %}
+      </button>
+    </div>
+
+    <div class="mobile-menu__body">
+      {%- if menu.links.size > 0 -%}
+        <ul class="mobile-menu__nav" role="list">
+          {%- for link in menu.links -%}
+            <li>
+              <a class="mobile-menu__link" href="{{ link.url }}">
+                {{ link.title | escape }}
+                {% render 'icon', icon: 'chevron-right' %}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="mobile-menu__actions">
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="btn btn--secondary btn--full" href="{{ routes.account_url }}">
+            {{ 'customers.account' | t }}
+          </a>
+        {%- endif -%}
+        <a class="btn btn--full" href="{{ routes.cart_url }}">
+          {{ 'cart.title' | t }} ({{ cart.item_count }})
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Search drawer {%- endcomment -%}
+<div class="search-drawer" id="SearchDrawer" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="search-drawer__inner">
+    <form class="search-drawer__form" action="{{ routes.search_url }}" method="get" role="search">
+      {% render 'icon', icon: 'search' %}
+      <input
+        class="search-drawer__input"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'search.placeholder' | t }}"
+      >
+      <input type="hidden" name="type" value="product">
+      <button class="search-drawer__submit" type="submit">
+        {{ 'search.submit' | t }}
+      </button>
+    </form>
+  </div>
+  <button class="search-drawer__close" type="button" id="SearchClose" aria-label="{{ 'general.close' | t }}">
+    {% render 'icon', icon: 'close' %}
+  </button>
+</div>
 
 {% schema %}
 {
   "name": "t:general.header",
   "settings": [
     {
+      "type": "header",
+      "content": "t:labels.logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "t:labels.logo_image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "t:labels.logo_width",
+      "default": 160
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu"
     },
     {
-      "type": "link_list",
-      "id": "customer_account_menu",
-      "label": "t:labels.customer_account_menu",
-      "default": "customer-account-main-menu"
+      "type": "header",
+      "content": "t:labels.header_icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "t:labels.show_search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "t:labels.show_account",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "t:labels.show_cart",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:labels.announcement"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "t:labels.show_announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "t:labels.announcement_text",
+      "default": "Livraison offerte dès 500 MAD au Maroc"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "t:labels.announcement_link"
     }
   ]
 }

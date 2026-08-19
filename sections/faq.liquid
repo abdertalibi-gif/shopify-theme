@@ -1,0 +1,131 @@
+{%- comment -%}
+  FAQ — accordion built with native <details> elements.
+{%- endcomment -%}
+
+<div class="section {% if section.settings.soft_background %}section--soft{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="section-heading">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-heading__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="section-heading__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="section-heading__subtitle">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="faq__list">
+        {%- for block in section.blocks -%}
+          <details class="faq__item reveal" {{ block.shopify_attributes }} {% if block.settings.open %}open{% endif %}>
+            <summary>
+              {{ block.settings.question | escape }}
+              {% render 'icon', icon: 'plus', class: 'faq__icon' %}
+            </summary>
+            <div class="faq__answer">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:general.faq",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Questions fréquentes"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "Tout ce que vous devez savoir avant de commander."
+    },
+    {
+      "type": "checkbox",
+      "id": "soft_background",
+      "label": "t:labels.soft_background",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "t:labels.question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:labels.question",
+          "default": "Quels sont les délais de livraison ?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:labels.answer",
+          "default": "<p>Nous livrons partout au Maroc sous 24 à 72h selon votre ville.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "t:labels.open_by_default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.faq",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Nous livrons partout au Maroc sous 24 à 72h selon votre ville.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je payer à la livraison ?",
+            "answer": "<p>Oui, le paiement à la livraison (Cash on Delivery) est disponible sur tout le territoire.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Comment effectuer un retour ?",
+            "answer": "<p>Vous disposez de 14 jours pour retourner un article. Contactez notre service client pour démarrer la procédure.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Les produits sont-ils authentiques ?",
+            "answer": "<p>Tous nos produits sont 100% authentiques et sélectionnés auprès de fournisseurs de confiance.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

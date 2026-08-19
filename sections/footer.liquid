@@ -1,56 +1,265 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+{%- comment -%}
+  Premium footer with brand, link columns, contact info,
+  social links, legal links, and payment icons.
+{%- endcomment -%}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+{%- liquid
+  assign footer_logo = section.settings.logo_image
+  assign footer_columns = 0
+  for block in section.blocks
+    if block.type == 'link_list'
+      assign footer_columns = footer_columns | plus: 1
+    endif
+  endfor
+  assign footer_columns = footer_columns | default: 3
+-%}
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+<footer class="footer" role="contentinfo">
+  <div class="page-width">
+    <div class="footer__top" style="--footer-columns: {{ footer_columns }}">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <a href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+            {%- if footer_logo != blank -%}
+              {{ footer_logo | image_url: width: 240 | image_tag: alt: shop.name, loading: 'lazy' }}
+            {%- else -%}
+              <span class="footer__logo-text">{{ shop.name | escape }}</span>
+            {%- endif -%}
+          </a>
+        </div>
+
+        {%- if section.settings.about_text != blank -%}
+          <p class="footer__about">{{ section.settings.about_text }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.show_social -%}
+          <div class="footer__social">
+            {%- if section.settings.social_facebook != blank -%}
+              <a class="footer__social-link" href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+                {% render 'icon', icon: 'facebook' %}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.social_instagram != blank -%}
+              <a class="footer__social-link" href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+                {% render 'icon', icon: 'instagram' %}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.social_tiktok != blank -%}
+              <a class="footer__social-link" href="{{ section.settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+                {% render 'icon', icon: 'tiktok' %}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.social_youtube != blank -%}
+              <a class="footer__social-link" href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
+                {% render 'icon', icon: 'youtube' %}
+              </a>
+            {%- endif -%}
+            {%- if section.settings.social_whatsapp != blank -%}
+              <a class="footer__social-link" href="{{ section.settings.social_whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp">
+                {% render 'icon', icon: 'whatsapp' %}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'link_list' -%}
+            <div class="footer__column" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="footer__column-title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="footer__nav" role="list">
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a class="footer__nav-link" href="{{ link.url }}">
+                        {{ link.title | escape }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+          {%- when 'contact' -%}
+            <div class="footer__column" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <h3 class="footer__column-title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              <ul class="footer__contact" role="list">
+                {%- if block.settings.phone != blank -%}
+                  <li>
+                    {% render 'icon', icon: 'phone' %}
+                    <a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone | escape }}</a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.email != blank -%}
+                  <li>
+                    {% render 'icon', icon: 'mail' %}
+                    <a href="mailto:{{ block.settings.email }}">{{ block.settings.email | escape }}</a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.address != blank -%}
+                  <li>
+                    {% render 'icon', icon: 'pin' %}
+                    <span>{{ block.settings.address | escape }}</span>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}
+        {%- if section.settings.copyright_text != blank %} &middot; {{ section.settings.copyright_text | escape }}{% endif -%}
+      </div>
+
+      <ul class="footer__legal" role="list">
+        {%- for link in section.settings.legal_menu.links -%}
+          <li>
+            <a href="{{ link.url }}">{{ link.title | escape }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="footer__payment">
+        {%- if section.settings.show_payment_icons -%}
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag }}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </footer>
-
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:general.footer",
+  "max_blocks": 6,
   "settings": [
     {
+      "type": "header",
+      "content": "t:labels.brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "t:labels.logo_image"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "t:labels.about_text",
+      "default": "Boutique premium marocaine — mode, maison et lifestyle. Qualité, élégance et service exceptionnel."
+    },
+    {
+      "type": "header",
+      "content": "t:labels.social"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "t:labels.show_social",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "t:labels.social_facebook"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "t:labels.social_instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "t:labels.social_tiktok"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "t:labels.social_youtube"
+    },
+    {
+      "type": "url",
+      "id": "social_whatsapp",
+      "label": "t:labels.social_whatsapp"
+    },
+    {
+      "type": "header",
+      "content": "t:labels.legal"
+    },
+    {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "id": "legal_menu",
+      "label": "t:labels.legal_menu"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "t:labels.copyright_text"
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
       "label": "t:labels.show_payment_icons",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "t:labels.link_list",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:labels.title",
+          "default": "Liens"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "t:labels.menu"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "t:labels.contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:labels.title",
+          "default": "Contact"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "t:labels.phone"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "t:labels.email"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "t:labels.address"
+        }
+      ]
     }
   ]
 }

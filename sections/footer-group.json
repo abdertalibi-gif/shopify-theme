@@ -14,8 +14,34 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "show_payment_icons": true,
+        "show_social": true,
+        "about_text": "Boutique premium marocaine — mode, maison et lifestyle. Qualité, élégance et service exceptionnel."
+      },
+      "blocks": {
+        "link_list": {
+          "type": "link_list",
+          "settings": {
+            "title": "Boutique",
+            "menu": "footer"
+          }
+        },
+        "help": {
+          "type": "link_list",
+          "settings": {
+            "title": "Aide",
+            "menu": "footer"
+          }
+        },
+        "contact": {
+          "type": "contact",
+          "settings": {
+            "title": "Contact",
+            "phone": "+212 6 00 00 00 00",
+            "email": "contact@boutique.ma",
+            "address": "Casablanca, Maroc"
+          }
+        }
       }
     }
   },

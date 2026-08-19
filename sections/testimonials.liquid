@@ -1,0 +1,179 @@
+{%- comment -%}
+  Customer testimonials — social proof grid.
+{%- endcomment -%}
+
+{%- assign per_row = section.settings.columns | default: 3 -%}
+
+<div class="section {% if section.settings.soft_background %}section--soft{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="section-heading">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-heading__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="section-heading__title">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="section-heading__subtitle">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="testimonials__grid" style="--testimonials-per-row: {{ per_row }}">
+        {%- for block in section.blocks -%}
+          <figure class="testimonial-card reveal" {{ block.shopify_attributes }} style="--reveal-delay: {{ forloop.index0 | times: 80 }}ms;">
+            <div class="testimonial-card__stars" role="img" aria-label="{{ block.settings.rating }} / 5">
+              {%- for i in (1..5) -%}
+                {%- if forloop.index <= block.settings.rating -%}
+                  {% render 'icon', icon: 'star' %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            <blockquote class="testimonial-card__quote">
+              &ldquo;{{ block.settings.text | escape }}&rdquo;
+            </blockquote>
+
+            <figcaption class="testimonial-card__footer">
+              {%- if block.settings.avatar != blank -%}
+                <div class="testimonial-card__avatar">
+                  {{ block.settings.avatar | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.name | escape }}
+                </div>
+              {%- else -%}
+                <div class="testimonial-card__avatar testimonial-card__avatar--fallback" aria-hidden="true">
+                  {{ block.settings.name | truncate: 1, '' | upcase | escape }}
+                </div>
+              {%- endif -%}
+              <div>
+                {%- if block.settings.name != blank -%}
+                  <div class="testimonial-card__name">{{ block.settings.name | escape }}</div>
+                {%- endif -%}
+                {%- if block.settings.role != blank -%}
+                  <div class="testimonial-card__role">{{ block.settings.role | escape }}</div>
+                {%- endif -%}
+              </div>
+            </figcaption>
+          </figure>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:general.testimonials",
+  "max_blocks": 9,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "default": "Témoignages"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Ils nous font confiance"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "La satisfaction de nos clients est notre plus belle récompense."
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "t:labels.columns",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "soft_background",
+      "label": "t:labels.soft_background",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "t:labels.testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "t:labels.rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "Qualité exceptionnelle et livraison ultra rapide. Je recommande vivement !"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "t:labels.name",
+          "default": "Salma B."
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "t:labels.role",
+          "default": "Casablanca"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "t:labels.avatar"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Qualité exceptionnelle et livraison ultra rapide. Je recommande vivement !",
+            "name": "Salma B.",
+            "role": "Casablanca"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Service client au top, produit conforme à la description. Très satisfaite.",
+            "name": "Yasmine E.",
+            "role": "Rabat"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Des pièces élégantes et soignées. Le paiement à la livraison est un vrai plus.",
+            "name": "Omar T.",
+            "role": "Marrakech"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
