@@ -45,6 +45,8 @@
   "labels": {
     "about_text": "About text",
     "accent_color": "Accent color",
+    "accent_bright_color": "Bright blue accent",
+    "accent_deep_color": "Deep blue accent",
     "accent_foreground_color": "Accent foreground color",
     "address": "Address",
     "alignment": "Alignment",
@@ -60,6 +62,7 @@
     "benefit": "Benefit",
     "border_color": "Border color",
     "brand": "Brand",
+    "brand_colors": "Brand colors",
     "button_label": "Button label",
     "button_link": "Button link",
     "button_corner_radius": "Button corner radius",

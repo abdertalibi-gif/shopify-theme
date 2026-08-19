@@ -13,7 +13,7 @@
   <div class="page-width">
     <div
       class="promo-banner promo-banner--{{ alignment }} reveal"
-      style="--promo-bg: {{ section.settings.background_color | default: '#9A6B4F' }}; --promo-fg: {{ section.settings.text_color | default: '#FFFFFF' }}; --promo-overlay: rgba(0, 0, 0, {{ overlay_opacity | divided_by: 100.0 }});"
+      style="--promo-bg: {{ section.settings.background_color | default: '#003B7A' }}; --promo-fg: {{ section.settings.text_color | default: '#FFFFFF' }}; --promo-overlay: rgba(0, 43, 92, {{ overlay_opacity | divided_by: 100.0 }});"
     >
       {%- if image != blank -%}
         <div class="promo-banner__media">
@@ -107,7 +107,7 @@
       "type": "color",
       "id": "background_color",
       "label": "t:labels.background_color",
-      "default": "#9A6B4F"
+      "default": "#003B7A"
     },
     {
       "type": "color",

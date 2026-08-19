@@ -102,6 +102,22 @@ h6 {
   letter-spacing: -0.01em;
 }
 
+input,
+textarea,
+select {
+  background-color: var(--formfieldbgcolor);
+  color: var(--formfieldcolor);
+  border: 1px solid var(--formfieldbordercolor);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 87, 184, 0.12);
+}
+
 a {
   color: inherit;
   text-decoration: none;

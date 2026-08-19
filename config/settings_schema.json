@@ -1,8 +1,8 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Atlas Premium",
-    "theme_version": "1.0.0",
+    "theme_name": "Atlas Blue",
+    "theme_version": "1.1.0",
     "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
@@ -23,7 +23,7 @@
       {
         "type": "font_picker",
         "id": "type_heading_font",
-        "default": "playfair_display_n4",
+        "default": "work_sans_n4",
         "label": "t:labels.heading_font"
       }
     ]
@@ -67,6 +67,10 @@
     "name": "t:general.colors",
     "settings": [
       {
+        "type": "header",
+        "content": "t:labels.brand_colors"
+      },
+      {
         "type": "color",
         "id": "background_color",
         "default": "#FFFFFF",
@@ -75,20 +79,32 @@
       {
         "type": "color",
         "id": "foreground_color",
-        "default": "#5A5550",
+        "default": "#52677D",
         "label": "t:labels.foreground"
       },
       {
         "type": "color",
         "id": "heading_color",
-        "default": "#2B2622",
+        "default": "#102A43",
         "label": "t:labels.heading_color"
       },
       {
         "type": "color",
         "id": "accent_color",
-        "default": "#9A6B4F",
+        "default": "#0057B8",
         "label": "t:labels.accent_color"
+      },
+      {
+        "type": "color",
+        "id": "accent_deep_color",
+        "default": "#003B7A",
+        "label": "t:labels.accent_deep_color"
+      },
+      {
+        "type": "color",
+        "id": "accent_bright_color",
+        "default": "#007BFF",
+        "label": "t:labels.accent_bright_color"
       },
       {
         "type": "color",
@@ -99,31 +115,31 @@
       {
         "type": "color",
         "id": "soft_color",
-        "default": "#F6F3EF",
+        "default": "#F4F8FC",
         "label": "t:labels.soft_color"
       },
       {
         "type": "color",
         "id": "border_color",
-        "default": "#E7E1DA",
+        "default": "#D9E8F7",
         "label": "t:labels.border_color"
       },
       {
         "type": "color",
         "id": "footer_background_color",
-        "default": "#211D1A",
+        "default": "#002B5C",
         "label": "t:labels.footer_background_color"
       },
       {
         "type": "color",
         "id": "footer_text_color",
-        "default": "#CFC8C0",
+        "default": "#FFFFFF",
         "label": "t:labels.footer_text_color"
       },
       {
         "type": "color",
         "id": "announcement_background_color",
-        "default": "#9A6B4F",
+        "default": "#003B7A",
         "label": "t:labels.announcement_background_color"
       },
       {

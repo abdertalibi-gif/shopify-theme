@@ -7,7 +7,7 @@
   assign image = section.settings.image
   assign alignment = section.settings.text_alignment
   assign height = section.settings.height
-  assign hero_text_color = section.settings.text_color | default: '#FFFFFF'
+  assign hero_text_color = section.settings.text_color | default: '#003B7A'
 -%}
 
 <div class="hero hero--{{ alignment }} hero--{{ height }} full-width" style="--hero-text-color: {{ hero_text_color }}; --hero-position: {{ section.settings.image_position }}">
@@ -16,16 +16,15 @@
       {{ image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 1780, 2000, 2400', sizes: '100vw' }}
     </div>
     {%- if section.settings.show_overlay -%}
-      <div class="hero__overlay" style="--hero-overlay-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+      <div class="hero__overlay" style="--hero-overlay-color: rgba(0, 43, 92, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
     {%- endif -%}
   {%- else -%}
-    <div class="hero__media hero__media--placeholder" style="background: linear-gradient(135deg, var(--color-soft), var(--color-accent));"></div>
-    <div class="hero__overlay" style="--hero-overlay-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+    <div class="hero__media hero__media--placeholder"></div>
   {%- endif -%}
 
   <div class="hero__content">
     {%- if section.settings.eyebrow != blank -%}
-      <span class="hero__eyebrow reveal" style="color: {{ hero_text_color }};">{{ section.settings.eyebrow | escape }}</span>
+      <span class="hero__eyebrow reveal" style="color: var(--color-accent);">{{ section.settings.eyebrow | escape }}</span>
     {%- endif -%}
 
     {%- if section.settings.heading != blank -%}
@@ -39,12 +38,12 @@
     {%- if section.settings.primary_button_label != blank or section.settings.secondary_button_label != blank -%}
       <div class="hero__ctas reveal" style="--reveal-delay: 300ms;">
         {%- if section.settings.primary_button_label != blank -%}
-          <a class="btn btn--light" href="{{ section.settings.primary_button_link | default: routes.root_url }}">
+          <a class="btn" href="{{ section.settings.primary_button_link | default: routes.root_url }}">
             {{ section.settings.primary_button_label | escape }}
           </a>
         {%- endif -%}
         {%- if section.settings.secondary_button_label != blank -%}
-          <a class="btn btn--light-secondary" href="{{ section.settings.secondary_button_link | default: routes.root_url }}">
+          <a class="btn btn--secondary" href="{{ section.settings.secondary_button_link | default: routes.root_url }}">
             {{ section.settings.secondary_button_label | escape }}
           </a>
         {%- endif -%}
@@ -167,7 +166,7 @@
       "type": "color",
       "id": "text_color",
       "label": "t:labels.text_color",
-      "default": "#FFFFFF"
+      "default": "#003B7A"
     }
   ],
   "presets": [
